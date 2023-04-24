@@ -1,3 +1,6 @@
+import type { RedisClientOptions } from 'redis';
+import * as redisStore from 'cache-manager-redis-store';
+import { CacheModule } from '@nestjs/cache-manager';
 import { Module, Logger } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule, loggingMiddleware } from 'nestjs-prisma';
@@ -21,6 +24,13 @@ import config from 'src/common/configs/config';
           }),
         ],
       },
+    }),
+    CacheModule.register<RedisClientOptions>({
+      store: redisStore,
+
+      // Store-specific configuration:
+      host: 'localhost',
+      port: 6379,
     }),
     UserModule,
     PostModule,
